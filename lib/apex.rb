@@ -27,11 +27,21 @@ module Apex
   require "apex/field"
   require "apex/converter"
   #
-  # Load Apex code
+  # Load Apex code from string
+  #
+  # [str]
+  # Apex code strings.
+  #
+  def self.load(str)
+    Apex::Class.new(str)
+  end
+  #
+  # Load Apex code from file
   #
   # [path]
+  # Path of Apex class file
   #
-  def self.load(path)
+  def self.load_file(path)
     File.open(path) do |file|
       Apex::Class.new(file.read)
     end

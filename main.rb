@@ -21,7 +21,7 @@ Dir[src+"/*.cls"].each do |path|
   if path =~ /XMLDom.cls/ || path =~ /startHereController.cls/
     next
   end
-  apex = Apex.load(path)
+  apex = Apex.load_file(path)
   if class_to_package[apex.class_name]
     package_name = "com.accenture.forcefactory." + class_to_package[apex.class_name]
   else
