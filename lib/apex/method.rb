@@ -10,14 +10,16 @@ module Apex
     end
     #
     # [name]
-    #
+    # name of method
     # [args]
-    #
+    # arguments type of method
     # [type]
-    #
+    # type of return value
     # [scope]
-    #
+    # accessibility of method
+    # (e.g. global, public, protected or private 
     # [abstraction]
+    # abstract method or not
     #
     def initialize(name,args,type,scope,abstraction)
       @name = name
@@ -30,7 +32,7 @@ module Apex
       "#<#{self.class} #{signeture}>"
     end
     def signeture
-      "#@scope #@abstraction #@type #@name()"
+      "#@scope #@abstraction #@type #@name(#{@args.join(',')})"
     end
   end
 end
