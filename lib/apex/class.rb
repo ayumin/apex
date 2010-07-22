@@ -25,6 +25,66 @@ module Apex
     # 
     #
     def initialize(code)
+      @origin = code
+      in_document = false
+      in_comment = false
+      pre_regurated = []
+      @origin.split("\n").each_with_index do |line,i|
+        line.sub!(/\/\/.*$/,'') # delete inline comment
+        if line =~ /^\s*$/
+          #
+          # skip empty line
+          #
+        elsif line =~ /\/\*\*.*$/
+          #pre = $`
+          doc = line
+          in_document = true
+          if line =~ /^.*\*\//
+            doc = $&
+            suf = $'
+            in_document = false
+            pre_regurated << doc << suf.to_s
+          else
+            pre_regurated << line
+          end
+        elsif line =~ /\/\*.*$/
+          pre = $`
+          com = $&
+          in_comment = true
+          if line =~ /^.*\*\//
+            com = $&
+            suf = $'
+            in_comment = false
+            pre_regurated << suf.to_s
+          else
+            pre_regurated << pre.to_s
+          end
+        elsif in_document
+          if line =~ /^.*\*\//
+            doc = $&
+            suf = $'
+            in_document = false
+            pre_regurated << doc
+            pre_regurated << suf.to_s
+          else
+            pre_regurated << line
+          end
+        elsif in_comment
+          if line =~ /^.*\*\//
+            com = $&
+            suf = $'
+            in_comment = false
+            pre_regurated << suf.to_s
+          end
+        else
+          #pre_regurated[0] = "" if pre_regurated.size == 0
+          pre_regurated <<  line
+        end
+      end
+      pre_regurated.reject! do |line|
+        line =~ /^\s*$/
+      end
+      puts pre_regurated.join("\n")
       @code = code
       pick_class
       pick_methods
